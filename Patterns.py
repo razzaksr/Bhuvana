@@ -81,3 +81,19 @@ for row in range(count,0,-1):
         print("@",end="")
     print()
     limit-=2
+    
+# time machine
+limit=count+2
+mid=(count//2)+1
+for row in range(1,count+1):
+    if row <= mid:
+        for space in range(1,row):
+            print("",end=" ")
+        limit-=2
+    else:
+        limit+=2
+        for space in range(count-1,row-1,-1):
+            print("",end=" ")
+    for col in range(1,limit+1):
+        print("@",end="")
+    print()
