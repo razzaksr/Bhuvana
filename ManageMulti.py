@@ -18,4 +18,5 @@ visit()'''
 
 #search(4000)
 order()
+visit()
 print(binary(4100))

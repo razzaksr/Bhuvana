@@ -45,9 +45,10 @@ def binary(data,floor=0,start=0,end=len(apart[0])-1):
     print("Searchin @ ", floor, "between ",start," and ",end)
     if start<end and floor<len(apart):
         mid=(end+start)//2
+        print("Found mid ",mid," floor ",floor,"for ",start,"and",end)
         if apart[floor][mid] == data: 
             return [str(floor)+"th floor",str(mid)+"th house"]
-        elif data < apart[floor][mid]:
+        elif data > apart[floor][mid]:
             return binary(data,floor,mid+1,end)
         else:
             return binary(data,floor,start,mid)
