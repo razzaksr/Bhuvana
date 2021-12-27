@@ -77,7 +77,7 @@ class Cloud(PlayStore): # multi level
             print(name,"app not in your phone")
     def __str__(self):
         return str(super().__str__())+" "+str(self.getdownloads())+" "+str(self.getrates())+"\n"
-    
+'''    
 cloud1=Cloud("razakmohamed","razzaksr@gmail.com",87654567873)
 cloud1>'instagram'
 cloud1>'office'
@@ -95,3 +95,4 @@ cloud1-'free fire'
 
 print(cloud1)
 
+'''
