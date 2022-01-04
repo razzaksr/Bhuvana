@@ -3,9 +3,7 @@
 from Model import Corporate
 
 class CorporateDirectory:
-    __directory={}
-    def __init__(self):
-        self.__directory={
+    __directory={
             "cts":Corporate("Cognizant","Application","Python,Java","Chennai,Banglore",23000,2.8,4.1),
             "tcs":Corporate("Tata Consultancy Services","Application","Java,Javascript","Chennai,Banglore,Coimbatore",42000,2.1,4.3),
             "infy":Corporate("Infosys","Application","Python","Banglore",12000,1.5,3.5),
@@ -17,11 +15,11 @@ class CorporateDirectory:
         key=other[0]
         obj=other[1]
         
-        if key in self.__directory:
-            return str(self.__directory[key])+" found "+key
+        if key in CorporateDirectory.__directory:
+            return str(CorporateDirectory.__directory[key])+" found "+key
         else:
             tmp=[]
-            for k,v in self.__directory.items():
+            for k,v in CorporateDirectory.__directory.items():
                 if obj.getNature()!="" and obj.getOpnnings()=="" and  obj.getRatings()==0.0:
                     if v.getNature()==obj.getNature():
                         tmp.append(k+" "+str(v.getOrg()))
@@ -37,23 +35,23 @@ class CorporateDirectory:
                 
     def __str__(self):
         info = "Directory had following corporates\n"
-        hai=list(self.__directory.items())
-        print("Before Sort:\n",hai)
+        hai=list(CorporateDirectory.__directory.items())
+        #print("Before Sort:\n",hai)
         hai.sort()
-        print(str(hai))
-        self.__directory=dict(hai)
-        for k,v in self.__directory.items():
+        #print(str(hai))
+        CorporateDirectory.__directory=dict(hai)
+        for k,v in CorporateDirectory.__directory.items():
             info+=str(k)+" - "+str(v)+"\n"
         return info
     
     def __add__(self,other):
         key,value=other[0],other[1]
-        self.__directory[key]=value
+        CorporateDirectory.__directory[key]=value
         print(value.getOrg(),"has added in directory with",key)
     
     def __rshift__(self,key):
-        if key in self.__directory.keys():
-            return self.__directory[key]
+        if key in CorporateDirectory.__directory.keys():
+            return CorporateDirectory.__directory[key]
         else:
             return key+" doesn't match with any corporate"
     
@@ -70,13 +68,13 @@ class CorporateDirectory:
     
     def __sub__(self,key):
         if type(key) is str:
-            if key in self.__directory.keys():
-                self.__directory.pop(key)#del self.__directory[key]
+            if key in CorporateDirectory.__directory.keys():
+                CorporateDirectory.__directory.pop(key)#del CorporateDirectory.__directory[key]
                 return "deletion done on "+key
         elif type(key) is Corporate:
-            for eachk,eachv in self.__directory.items():
+            for eachk,eachv in CorporateDirectory.__directory.items():
                 if key.getOrg() == eachv.getOrg() and eachv.getRatings()==key.getRatings():
-                    self.__directory.pop(eachk)
+                    CorporateDirectory.__directory.pop(eachk)
                     return "deletion done on "+key.getOrg()
         else:
             return str(key)+" corporate doesn't exists"
@@ -86,13 +84,13 @@ class CorporateDirectory:
         obj=other[1]
         #print(key,obj.getOrg())
         pair=[]
-        if key!="" and key in self.__directory.keys():
-            #print("Key based update on",self.__directory[key])
+        if key!="" and key in CorporateDirectory.__directory.keys():
+            #print("Key based update on",CorporateDirectory.__directory[key])
             pair.append(key)
-            pair.append(self.__directory[key])
+            pair.append(CorporateDirectory.__directory[key])
         
         elif obj.getOrg()!="":
-            for eachk,eachv in self.__directory.items():
+            for eachk,eachv in CorporateDirectory.__directory.items():
                 if eachv.getOrg()==obj.getOrg():
                     pair.append(eachk)
                     pair.append(eachv)
@@ -116,55 +114,55 @@ class CorporateDirectory:
                 pair[1].setRatings(float(input("Tell us current ratings of "+ pair[1].getOrg() +" : ")))
             else:
                 print(prop,"not match any of Corporate attribute")
-            self.__directory[pair[0]]=pair[1]
-            print(pair[0],"has updated as\n",self.__directory[pair[0]])
+            CorporateDirectory.__directory[pair[0]]=pair[1]
+            print(pair[0],"has updated as\n",CorporateDirectory.__directory[pair[0]])
     
 
-dir1=CorporateDirectory()
-#print(dir1)
+# dir1=CorporateDirectory()
+# #print(dir1)
 
-while True:
-    print("\n1.add\n2.list\n3.edit\n4.delete\n5.read\n6.search");
-    choice=int(input("Enter the choice by number: "))
-    if choice == 1:
-        obj=dir1.getCorporate()
-        k=input("Tell us short form of this company: ")
-        dir1+[k,obj]
-    elif choice == 2:
-        print(dir1)
-    elif choice == 3:
-        based=input("Based on what you wish to update: key or org")
-        if based =="key":
-            print(dir1-input("Enter the org short form"))
-        elif based ==  "org":
-            obj=Corporate(org=input("Enter the company name"),rate=float(input("Tell us rating:")))
-            print(dir1-obj)
-        else:
-            print(based,"not match with anything")
-    elif choice == 4:
-        based=input("Based on what you wish to delete: key or org")
-        if based =="key":
-            print(dir1-[input("Enter the org short form"),object])
-        elif based ==  "org":
-            obj=Corporate(org=input("Enter the company name"))
-            dir1<<["",obj]
-        else:
-            print(based,"not match with anything")
-    elif choice == 5:
-        print(dir1>>input("Enter the org short form"))
-    elif choice ==6:
-        based=input("Based on what you wish to search: key, nature, opnnings,ratings")
-        if based == "nature":
-            print(dir1*["",Corporate(nature=input("Tell us nature: "))])
-        elif based == "ratings":
-            print(dir1*["",Corporate(rate=float(input("Tell us rating:")))])
-        elif based == "opennings":
-            print(dir1*["",Corporate(open=input("Enter the skill: "))])
-        elif based == "key":
-            print(dir1*[input("Enter the short form"),Corporate()])
-        else:
-            print(based,"not match with anything")
-    else:break
+# while True:
+#     print("\n1.add\n2.list\n3.edit\n4.delete\n5.read\n6.search");
+#     choice=int(input("Enter the choice by number: "))
+#     if choice == 1:
+#         obj=dir1.getCorporate()
+#         k=input("Tell us short form of this company: ")
+#         dir1+[k,obj]
+#     elif choice == 2:
+#         print(dir1)
+#     elif choice == 3:
+#         based=input("Based on what you wish to update: key or org")
+#         if based =="key":
+#             print(dir1-input("Enter the org short form"))
+#         elif based ==  "org":
+#             obj=Corporate(org=input("Enter the company name"),rate=float(input("Tell us rating:")))
+#             print(dir1-obj)
+#         else:
+#             print(based,"not match with anything")
+#     elif choice == 4:
+#         based=input("Based on what you wish to delete: key or org")
+#         if based =="key":
+#             print(dir1-[input("Enter the org short form"),object])
+#         elif based ==  "org":
+#             obj=Corporate(org=input("Enter the company name"))
+#             dir1<<["",obj]
+#         else:
+#             print(based,"not match with anything")
+#     elif choice == 5:
+#         print(dir1>>input("Enter the org short form"))
+#     elif choice ==6:
+#         based=input("Based on what you wish to search: key, nature, opnnings,ratings")
+#         if based == "nature":
+#             print(dir1*["",Corporate(nature=input("Tell us nature: "))])
+#         elif based == "ratings":
+#             print(dir1*["",Corporate(rate=float(input("Tell us rating:")))])
+#         elif based == "opennings":
+#             print(dir1*["",Corporate(open=input("Enter the skill: "))])
+#         elif based == "key":
+#             print(dir1*[input("Enter the short form"),Corporate()])
+#         else:
+#             print(based,"not match with anything")
+#     else:break
     
 
 
