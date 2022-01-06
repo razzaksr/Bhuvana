@@ -58,13 +58,19 @@ class Access(Thread):
 
 hold=Lock()
 
-t1=Access("Manoj")
-t2=Access("Vinayak")
-t3=Access("Prathap")
-t4=Access("Maran")
+for numbers in range(1,5):
+    thread=Access(input("Tell us username: "))
+    thread.start()
+    thread.join()
+    
 
-t1.start()
-t2.start()
-t3.start()
-t4.start()
+# t1=Access("Manoj")
+# t2=Access("Vinayak")
+# t3=Access("Prathap")
+# t4=Access("Maran")
+
+# t1.start()
+# t2.start()
+# t3.start()
+# t4.start()
 
