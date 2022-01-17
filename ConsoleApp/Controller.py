@@ -1,17 +1,26 @@
 # Storages and operation's implementation
 
 from Model import Corporate
+from pickle import *
 
 class CorporateDirectory:
-    __directory={
-            "cts":Corporate("Cognizant","Application","Python,Java","Chennai,Banglore",23000,2.8,4.1),
-            "tcs":Corporate("Tata Consultancy Services","Application","Java,Javascript","Chennai,Banglore,Coimbatore",42000,2.1,4.3),
-            "infy":Corporate("Infosys","Application","Python","Banglore",12000,1.5,3.5),
-            "ibm":Corporate("IBM","Product","C,Java,C++","Chennai,Hyderabad,Cochin",7000,4.9,3.9),
-            "zoho":Corporate("ZOHO","Product","Python,Java,C","Chennai",11000,3.9,4.8),
-        }
+    # permanant memory
+    __file="D:\\Course backups\\Python\\Bhuvana\\cordirect.doc"
+    # temporary memory
+    __directory={}
+    
+    '''def __init__(self):
+        hey=open(CorporateDirectory.__file,"wb")
+        dump(CorporateDirectory.__directory,hey)
+        print("Few basic corporates written in a file")'''
     
     def __mul__(self,other):
+        
+        # load from the file to temporary directory
+        tmpFile=open(CorporateDirectory.__file,"rb")
+        CorporateDirectory.__directory=load(tmpFile)
+        tmpFile.close()
+        
         key=other[0]
         obj=other[1]
         
@@ -35,10 +44,12 @@ class CorporateDirectory:
                 
     def __str__(self):
         info = "Directory had following corporates\n"
+        
+        # load encrypted content from file to temporary memory directory
+        CorporateDirectory.__directory=load(open(CorporateDirectory.__file,"rb"))
+        
         hai=list(CorporateDirectory.__directory.items())
-        #print("Before Sort:\n",hai)
         hai.sort()
-        #print(str(hai))
         CorporateDirectory.__directory=dict(hai)
         for k,v in CorporateDirectory.__directory.items():
             info+=str(k)+" - "+str(v)+"\n"
@@ -46,10 +57,27 @@ class CorporateDirectory:
     
     def __add__(self,other):
         key,value=other[0],other[1]
+        
+        # load from the file to temporary directory
+        tmpFile=open(CorporateDirectory.__file,"rb")
+        CorporateDirectory.__directory=load(tmpFile)
+        tmpFile.close()
+        
+        # after the loaded values from file add new item
         CorporateDirectory.__directory[key]=value
+        
+        # in order to insert an item permanantly dump temporary directory to file
+        tmpFile=open(CorporateDirectory.__file,"wb")
+        dump(CorporateDirectory.__directory,tmpFile)
+        tmpFile.close()
+        
         print(value.getOrg(),"has added in directory with",key)
     
     def __rshift__(self,key):
+        # load from the file to temporary directory
+        tmpFile=open(CorporateDirectory.__file,"rb")
+        CorporateDirectory.__directory=load(tmpFile)
+        tmpFile.close()
         if key in CorporateDirectory.__directory.keys():
             return CorporateDirectory.__directory[key]
         else:
@@ -67,19 +95,38 @@ class CorporateDirectory:
         return obj
     
     def __sub__(self,key):
+        # loading from file 
+        tmpFile=open(CorporateDirectory.__file,"rb")
+        CorporateDirectory.__directory=load(tmpFile)
+        tmpFile.close()
+        
         if type(key) is str:
             if key in CorporateDirectory.__directory.keys():
                 CorporateDirectory.__directory.pop(key)#del CorporateDirectory.__directory[key]
+                # in order to impact in permanant storage dump to the file
+                tmpFile=open(CorporateDirectory.__file,"wb")
+                dump(CorporateDirectory.__directory,tmpFile)
+                tmpFile.close()
                 return "deletion done on "+key
         elif type(key) is Corporate:
             for eachk,eachv in CorporateDirectory.__directory.items():
                 if key.getOrg() == eachv.getOrg() and eachv.getRatings()==key.getRatings():
                     CorporateDirectory.__directory.pop(eachk)
+                    # in order to impact in permanant storage dump to the file
+                    tmpFile=open(CorporateDirectory.__file,"wb")
+                    dump(CorporateDirectory.__directory,tmpFile)
+                    tmpFile.close()
                     return "deletion done on "+key.getOrg()
         else:
             return str(key)+" corporate doesn't exists"
     
     def __lshift__(self,other):
+        
+        # loading from file 
+        tmpFile=open(CorporateDirectory.__file,"rb")
+        CorporateDirectory.__directory=load(tmpFile)
+        tmpFile.close()
+        
         key=other[0]
         obj=other[1]
         #print(key,obj.getOrg())
@@ -115,6 +162,12 @@ class CorporateDirectory:
             else:
                 print(prop,"not match any of Corporate attribute")
             CorporateDirectory.__directory[pair[0]]=pair[1]
+            
+            # in order to impact in permanant storage dump to the file
+            tmpFile=open(CorporateDirectory.__file,"wb")
+            dump(CorporateDirectory.__directory,tmpFile)
+            tmpFile.close()
+            
             print(pair[0],"has updated as\n",CorporateDirectory.__directory[pair[0]])
     
 

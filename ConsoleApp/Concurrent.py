@@ -42,7 +42,7 @@ class Access(Thread):
             elif choice == 5:
                 print(dir1>>input("Enter the org short form"))
             elif choice ==6:
-                based=input("Based on what you wish to search: key, nature, opnnings,ratings")
+                based=input("Based on what you wish to search: key, nature, opennings,ratings")
                 if based == "nature":
                     print(dir1*["",Corporate(nature=input("Tell us nature: "))])
                 elif based == "ratings":
