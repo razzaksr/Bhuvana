@@ -1,5 +1,6 @@
 # Storages and operation's implementation
 
+from ExceptionClass import CorporateError
 from Model import Corporate
 from pickle import *
 
@@ -86,12 +87,20 @@ class CorporateDirectory:
     def getCorporate(self):
         obj=Corporate()
         obj.setOrg(input("Tell us corporate name: "))
-        obj.setEmployees(int(input("Tell us no of employees: ")))
-        obj.setMinSal(float(input("Tell us basic salary of this company: ")))
         obj.setNature(input("Tell us nature of industry: "))
         obj.setOpennings(input("Tell us technology where it has opnnings: "))
         obj.setPlace(input("Tell us campus locations: "))
-        obj.setRatings(float(input("Tell us rating for this companay: ")))
+        
+        try:
+            obj.setEmployees(int(input("Tell us no of employees: ")))
+            obj.setMinSal(float(input("Tell us basic salary of this company: ")))
+            obj.setRatings(float(input("Tell us rating for this companay: ")))
+        except ValueError as ve:
+            print(ve,"\nemployees must be whole number,basic salary and rarings must be fractional numbers")
+            obj.setEmployees(int(input("Tell us no of employees: ")))
+            obj.setMinSal(float(input("Tell us basic salary of this company: ")))
+            obj.setRatings(float(input("Tell us rating for this companay: ")))
+        
         return obj
     
     def __sub__(self,key):
@@ -142,33 +151,72 @@ class CorporateDirectory:
                     pair.append(eachk)
                     pair.append(eachv)
         
-        if len(pair)!=0:
-            #print(pair[0],pair[1])
-            prop=input("Tell us property of Corporate "+pair[0]+": ")
-            if prop == "org":
-                pair[1].setOrg(input("Tell us new org name: "))
-            elif prop=="nature":
-                pair[1].setNature(input("Tell us new nature of "+ pair[1].getOrg() +" : "))
-            elif prop=="opnnings":
-                pair[1].setOpennings(input("Tell us new opnnings skill of "+ pair[1].getOrg() +" : "))
-            elif prop=="place":
-                pair[1].setPlace(input("Tell us places of "+ pair[1].getOrg() +" : "))
-            elif prop=="employees":
-                pair[1].setEmployees(int(input("Tell us no of employees of "+ pair[1].getOrg() +" : ")))
-            elif prop=="salary":
-                pair[1].setMinSal(float(input("Tell us minium salary of "+ pair[1].getOrg() +" : ")))
-            elif prop=="rate":
-                pair[1].setRatings(float(input("Tell us current ratings of "+ pair[1].getOrg() +" : ")))
+        try:
+            if len(pair)!=0:
+                #print(pair[0],pair[1])
+                
+                try:
+                    prop=input("Tell us property of Corporate "+pair[0]+": ")
+                    if prop == "org":
+                        pair[1].setOrg(input("Tell us new org name: "))
+                    elif prop=="nature":
+                        pair[1].setNature(input("Tell us new nature of "+ pair[1].getOrg() +" : "))
+                    elif prop=="opennings":
+                        pair[1].setOpennings(input("Tell us new opnnings skill of "+ pair[1].getOrg() +" : "))
+                    elif prop=="place":
+                        pair[1].setPlace(input("Tell us places of "+ pair[1].getOrg() +" : "))
+                    elif prop=="employees":
+                        pair[1].setEmployees(int(input("Tell us no of employees of "+ pair[1].getOrg() +" : ")))
+                    elif prop=="salary":
+                        pair[1].setMinSal(float(input("Tell us minium salary of "+ pair[1].getOrg() +" : ")))
+                    elif prop=="rate":
+                        pair[1].setRatings(float(input("Tell us current ratings of "+ pair[1].getOrg() +" : ")))
+                    else:
+                        print(prop,"not match any of Corporate attribute")
+                        raise CorporateError()
+                except CorporateError as cp:
+                    print(cp)
+                    print("properties any one of following\norg,nature,opennings,place,employees,salary,rate")
+                    prop=input("Tell us property of Corporate "+pair[0]+": ")
+                    if prop == "org":
+                        pair[1].setOrg(input("Tell us new org name: "))
+                    elif prop=="nature":
+                        pair[1].setNature(input("Tell us new nature of "+ pair[1].getOrg() +" : "))
+                    elif prop=="opennings":
+                        pair[1].setOpennings(input("Tell us new opnnings skill of "+ pair[1].getOrg() +" : "))
+                    elif prop=="place":
+                        pair[1].setPlace(input("Tell us places of "+ pair[1].getOrg() +" : "))
+                    elif prop=="employees":
+                        pair[1].setEmployees(int(input("Tell us no of employees of "+ pair[1].getOrg() +" : ")))
+                    elif prop=="salary":
+                        pair[1].setMinSal(float(input("Tell us minium salary of "+ pair[1].getOrg() +" : ")))
+                    elif prop=="rate":
+                        pair[1].setRatings(float(input("Tell us current ratings of "+ pair[1].getOrg() +" : ")))
+                    else:
+                        print(prop,"not match any of Corporate attribute\nchances over")
+                
+                CorporateDirectory.__directory[pair[0]]=pair[1]
+                
+                # in order to impact in permanant storage dump to the file
+                tmpFile=open(CorporateDirectory.__file,"wb")
+                dump(CorporateDirectory.__directory,tmpFile)
+                tmpFile.close()
+                
+                print(pair[0],"has updated as\n",CorporateDirectory.__directory[pair[0]])
             else:
-                print(prop,"not match any of Corporate attribute")
-            CorporateDirectory.__directory[pair[0]]=pair[1]
+                raise CorporateError()
+        except CorporateError as ce:
+            print(ce)
+            based=input("Based on what you wish to update: key or org: ")
+            if based =="key":
+                print(CorporateDirectory.__directory.keys())
+                self<<[input("Enter the org short form"),Corporate()]
+            elif based ==  "org":
+                for x in CorporateDirectory.__directory.values():
+                    print(x.getOrg())
+                obj=Corporate(org=input("Enter the company name"))
+                self<<["",obj]
             
-            # in order to impact in permanant storage dump to the file
-            tmpFile=open(CorporateDirectory.__file,"wb")
-            dump(CorporateDirectory.__directory,tmpFile)
-            tmpFile.close()
-            
-            print(pair[0],"has updated as\n",CorporateDirectory.__directory[pair[0]])
     
 
 # dir1=CorporateDirectory()
