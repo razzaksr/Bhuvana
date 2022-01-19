@@ -1,0 +1,39 @@
+Grpahical User Interface: GUI
+
+Console Application: core python
+        presentation/ front end : Blank screen, interface via keyboard
+        business/ back end      : core python
+        data/ storage           : files
+
+UI Application: tkinter, jython, PyQT
+        presentation/ front end : tkinter
+        business/ back end      : core python
+        data/ storage           : mysql         >> pymysql using "pip"
+
+tkinter:
+    python module like array, pickle,...
+
+2 implementation:
+    a. without "oo" approach
+    b. "oo" approach
+
+tkinter componenets:
+    Tk()>> window
+    entry>> text box
+    label>> label for intructing something
+    button
+    radio
+    check
+    combo
+    menu
+    window
+    ....
+
+properties:
+    text, fg, bg, command, font, placement, title, geometry
+
+placement:
+    a. grid layout>> like table rows and columns wise
+    b. pack layout>> vertical>> tom,bottom
+                        padx,pady>> horizontal, left,right
+    c. place layout> x,y
