@@ -49,15 +49,17 @@ class MyTable(Tk):
             "apps":["incometaxindia","icici","irctc","axisbank"]
         }
         
-        line=2
+        col=0
         for x in self.mydict.keys():
-            col=0
+            line=2
             for v in self.mydict[x]:
                 self.tmpbox=Entry(self)
                 self.tmpbox.insert(END,v)
                 self.tmpbox.grid(row=line,column=col)
-                col+=1
-            line+=1
+                line+=1
+            col+=1
+    
+                
             
 
 my=MyTable()
