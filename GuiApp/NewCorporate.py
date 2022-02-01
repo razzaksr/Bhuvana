@@ -65,18 +65,19 @@ class Fresh(Tk):
         
     
     def submit(self):
-        messagebox.showinfo("Approve","Corporate yet to be added "+str(self.e1.get()))
+        messagebox.showinfo("Approve","Corporate yet to be added")
+    
         con=connect(host='localhost',user='root',password='',database='bhuvana')
         
         con.autocommit(True)
         
         tmp=""
         
-        if format(self.cb1v.get())==True:
+        if self.cb1v.get()==True:
             tmp+="Java,"
-        if format(self.cb2v.get())==True:
+        if self.cb2v.get()==True:
             tmp+="Javascript,"
-        if format(self.cb3v.get())==True:
+        if self.cb3v.get()==True:
             tmp+="Python,"
         
         count=int(str(self.e3.get()))
@@ -98,15 +99,15 @@ class Fresh(Tk):
     
     def reset(self):
         messagebox.showinfo("Cancel","All fields yet to be cleared ")
-        self.e1.insert(1.0,"")
-        self.e2.insert(1.0,"")
-        self.e3.insert(1.0,"")
-        self.e4.insert(1.0,"")
-        self.e5.insert(1.0,"")
+        self.e1.delete(0, END)
+        self.e2.delete(0,END)
+        self.e3.delete(0,END)
+        self.e4.delete(0,END)
+        self.e5.delete(0,END)
         self.cb1v.set(False)
         self.cb2v.set(False)
         self.cb3v.set(False)
-        self.cb.selection_clear()
+        self.cb.set("")
         
 
 f=Fresh()
