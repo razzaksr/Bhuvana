@@ -69,8 +69,6 @@ class Fresh(Tk):
     
         con=connect(host='localhost',user='root',password='',database='bhuvana')
         
-        con.autocommit(True)
-        
         tmp=""
         
         if self.cb1v.get()==True:
@@ -89,6 +87,8 @@ class Fresh(Tk):
         cur=con.cursor()
         
         ack = cur.execute(qry)
+        
+        con.autocommit(True)
         
         if ack!=0:
             messagebox.showinfo("Alert","Corporate has inserted")
